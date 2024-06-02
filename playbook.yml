@@ -1,4 +1,5 @@
 - hosts: all
+  become: yes
   collections:
     - community.docker
 
@@ -9,3 +10,26 @@
     - name: Install docker module via pip
       pip:
         name: docker
+
+    - name: Create env file directory
+      file:
+        path: "{{ destination_path }}"
+        state: directory
+      tags: deploy
+
+    - name: Copy env file template
+      template:
+        src: .env
+        dest: "{{ redmine_env_file }}"
+      tags: deploy
+
+    - name: Run Redmine
+      community.docker.docker_container:
+        name: redmine
+        image: redmine
+        restart_policy: always
+        state: started
+        ports:
+          - "80:3000"
+        env_file: "{{ redmine_env_file }}"
+      tags: deploy
