@@ -1,0 +1,11 @@
+- hosts: all
+  collections:
+    - community.docker
+
+  roles:
+    - geerlingguy.pip
+
+  tasks:
+    - name: Install docker module via pip
+      pip:
+        name: docker
