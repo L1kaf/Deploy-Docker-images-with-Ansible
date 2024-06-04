@@ -40,3 +40,17 @@
           - "80:3000"
         env_file: "{{ redmine_env_file }}"
       tags: deploy
+
+    - name: Import the Datadog Agent role from the Datadog collection
+      import_role:
+        name: datadog.dd.agent
+      vars:
+        datadog_api_key: "{{ datadog_key }}"
+        datadog_site: "{{ datadog_domain }}"
+        datadog_checks:
+          http_check:
+            init_config:
+            instances:
+              - name: app_check
+                url: http://localhost
+      tags: deploy
