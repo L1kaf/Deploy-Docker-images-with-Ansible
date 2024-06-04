@@ -7,9 +7,16 @@
     - geerlingguy.pip
 
   tasks:
+    - name: Install specific version of requests
+      pip:
+        name: requests==2.31.0
+        state: present
+      tags: install
+
     - name: Install docker module via pip
       pip:
         name: docker
+      tags: install
 
     - name: Create env file directory
       file:
